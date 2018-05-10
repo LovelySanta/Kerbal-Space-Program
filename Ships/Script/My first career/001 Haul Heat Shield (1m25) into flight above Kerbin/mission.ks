@@ -1,3 +1,8 @@
+
+include("lib/util/","print-functions").
+
+
+
 function countDown {
   parameter countAmount. // Number to count down from
 
@@ -16,3 +21,7 @@ function countDown {
 
 
 countDown(2).
+
+printLeft(4,"test").
+printCenter(5,"test").
+printRight(6,"test").
