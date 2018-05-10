@@ -1,15 +1,15 @@
 
 
 function printAtPosition {
-  parameter row.
-  parameter col.
-  parameter text.
+  parameter row.  // line to print on
+  parameter col.  // Indentation on the line
+  parameter text. // Text to print
 
   print text at (col, row).
 }
 
 function clearLine {
-  parameter row.
+  parameter row.  // line to print on
   local text is "".
 
   from { local count is 0.}
@@ -23,25 +23,24 @@ function clearLine {
 }
 
 function printLeft {
-  parameter row.
-  parameter text.
+  parameter row.  // line to print on
+  parameter text. // Text to print
 
   clearLine(row).
   printAtPosition(row, 0, text).
-
 }
 
 function printRight {
-  parameter row.
-  parameter text.
+  parameter row.  // line to print on
+  parameter text. // Text to print
 
   clearLine(row).
   printAtPosition(row, terminal:width - text:length, text).
 }
 
 function printCenter {
-  parameter row.
-  parameter text.
+  parameter row.  // line to print on
+  parameter text. // Text to print
 
   clearLine(row).
   printAtPosition(row, floor((terminal:width - text:length)/2), text).
