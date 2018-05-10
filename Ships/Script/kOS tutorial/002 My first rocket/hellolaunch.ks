@@ -13,13 +13,19 @@ FROM {local countdown is 10.} UNTIL countdown = 0 STEP {SET countdown to countdo
     WAIT 1. // pauses the script here for 1 second.
 }
 
-UNTIL SHIP:MAXTHRUST > 0 {
-    WAIT 0.5. // pause half a second between stage attempts.
-    PRINT "Stage activated.".
-    STAGE. // same as hitting the spacebar.
-}
+//This is a trigger that constantly checks to see if our thrust is zero.
+//If it is, it will attempt to stage and then return to where the script
+//left off. The PRESERVE keyword keeps the trigger active even after it
+//has been triggered.
+WHEN MAXTHRUST = 0 THEN {
+    PRINT "Staging".
+    STAGE.
+    PRESERVE.
+}.
 
-WAIT UNTIL SHIP:ALTITUDE > 70000.
+LOCK STEERING TO UP.
+
+WAIT UNTIL ALTITUDE > 70000.
 
 // NOTE that it is vital to not just let the script end right away
 // here.  Once a kOS script just ends, it releases all the controls
