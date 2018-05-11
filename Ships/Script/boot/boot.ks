@@ -8,7 +8,7 @@ Clearscreen.
 print "Booting ...".
 
 // Loading default files
-copypath("0:/lib/util/include.ks", "1:/include.ks").
+copypath("0:/lib/boot/include.ks", "1:/include.ks").
 runpath("include").
 
 wait until SHIP:UNPACKED and SHIP:LOADED.
@@ -31,5 +31,5 @@ wait 1.
 
 // Start mission
 print "Starting mission...".
-wait 3.
+wait 2.
 run mission.ks.
