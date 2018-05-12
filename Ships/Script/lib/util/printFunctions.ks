@@ -57,9 +57,14 @@ function printCenter {
 }
 
 function printTitle {
-  parameter firstRow.         // line to print on
-  parameter titleToWrite.     // Title to print
-  parameter titleChar is "*". // Character to suround the title with
+  parameter firstRow.                   // line to print on
+  parameter titleToWrite.               // Title to print
+  parameter shouldClearScreen is false. // If it should clear the screen
+  parameter titleChar is "*".           // Character to suround the title with
+
+  if shouldClearScreen {
+    Clearscreen.
+  }
 
   printCenter(firstRow + 1,titleToWrite).
 
