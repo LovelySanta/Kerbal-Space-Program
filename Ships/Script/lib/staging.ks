@@ -13,5 +13,7 @@ function stageWhenEngineFlameout {
   if checkEngineFlameout {
     wait until stage:ready.
     stage.
+    return true.
   }
+  return false.
 }

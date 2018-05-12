@@ -4,7 +4,7 @@ function printDebug {
   printLeft(5,  "READOUTS:").
   printLeft(6,  "  Airspeed: " + round(SHIP:AIRSPEED)).
   printLeft(7,  "  Altitude: " + round(SHIP:ALTITUDE)).
-  printLeft(8,  "  Pitch:    " + round(vang(SHIP:FACING:vector, SHIP:UP:vector)-90)).
+  printLeft(8,  "  Pitch:    " + round(90 - vang(SHIP:FACING:vector, SHIP:UP:vector))).
   printLeft(10, "CONTROLS:").
   printLeft(11, "  Pitch:    " + round(mPitch)).
 }
@@ -14,6 +14,7 @@ function safeReturn {
   local init is 1.
   local prepareDeaccelerationBurn is 2.
   local deaccelerationBurn is 3.
+  local fallBackToKerbin is 4.
   local returned is -1.
 
   local currentState is init.
@@ -46,8 +47,9 @@ function safeReturn {
       // Do 180 turn
       // 90 at mTargetHeight
       // -90 at mDeaccelerationBurnHeight
-      if SHIP:ALTITUDE >= mTargetHeight {
-        set mPitch to (SHIP:ALTITUDE - mTargetHeight) * (-180) / (mDeaccelerationBurnHeight - mTargetHeight) - 90.
+      if (SHIP:ALTITUDE >= mTargetHeight and SHIP:ALTITUDE <= mDeaccelerationBurnHeight) {
+        //set mPitch to -270 + (SHIP:ALTITUDE - mTargetHeight) * 180 / (mDeaccelerationBurnHeight - mTargetHeight).
+        set mPitch to 90 - ((SHIP:ALTITUDE - mTargetHeight) / (mDeaccelerationBurnHeight - mTargetHeight) * (180)).
       } else {
         set mPitch to -90.
       }
@@ -56,7 +58,7 @@ function safeReturn {
       // Debug printouts
       printDebug(mPitch).
 
-      if (round(vang(SHIP:FACING:vector, SHIP:UP:vector))>=175) {
+      if (90 - round(vang(SHIP:FACING:vector, SHIP:UP:vector)) <= -85) {
         set mSteering to heading(90,-90).
         set currentState to deaccelerationBurn.
       } else {
@@ -67,6 +69,27 @@ function safeReturn {
     when currentState = deaccelerationBurn then {
       set mThrottle to 1.
 
+      if stageWhenEngineFlameout() {
+        set currentState to fallBackToKerbin.
+        printTitle(1, "Fall back to Kerbin", true).
+      } else {
+        preserve.
+      }
+    }
+
+    when currentState = fallBackToKerbin then {
+      set mSteering to heading (90,90).
+
+      // Debug printouts
+      printDebug().
+
+      // Warp till safe to deplay chutes
+      if ((not chutessafe) and SHIP:ALTITUDE < 25000) {
+        set KUNIVERSE:TIMEWARP:RATE to 1.
+        CHUTESSAFE ON.
+      } else {
+        set KUNIVERSE:TIMEWARP:RATE to 100.
+      }
 
     }
 

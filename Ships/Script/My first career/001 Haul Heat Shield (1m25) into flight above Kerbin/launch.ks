@@ -87,7 +87,7 @@ function launch {
       printLeft(5,  "READOUTS:").
       printLeft(6,  "  Airspeed: " + round(SHIP:AIRSPEED)).
       printLeft(7,  "  Altitude: " + round(SHIP:ALTITUDE)).
-      printLeft(8,  "  Pitch:    " + round(vang(SHIP:FACING:vector, SHIP:UP:vector))).
+      printLeft(8,  "  Pitch:    " + round(90 - vang(SHIP:FACING:vector, SHIP:UP:vector))).
       printLeft(10, "CONTROLS:").
       printLeft(11, "  Throttle: " + round(mThrottle, 2)).
 
