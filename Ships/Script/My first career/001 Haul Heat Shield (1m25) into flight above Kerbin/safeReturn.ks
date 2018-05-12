@@ -47,7 +47,7 @@ function safeReturn {
       // 90 at mTargetHeight
       // -90 at mDeaccelerationBurnHeight
       if SHIP:ALTITUDE >= mTargetHeight {
-        set mPitch to (SHIP:ALTITUDE - mTargetHeight) * (-180) / (mDeaccelerationBurnHeight - mTargetHeight) + 90.
+        set mPitch to (SHIP:ALTITUDE - mTargetHeight) * (-180) / (mDeaccelerationBurnHeight - mTargetHeight) - 90.
       } else {
         set mPitch to -90.
       }
@@ -67,7 +67,7 @@ function safeReturn {
     when currentState = deaccelerationBurn then {
       set mThrottle to 1.
 
-      
+
     }
 
     // TODO

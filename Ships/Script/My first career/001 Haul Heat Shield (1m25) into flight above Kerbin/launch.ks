@@ -16,25 +16,6 @@ function countdown {
   }
 }
 
-function doStage {
-  parameter shouldStage is true.
-
-  local engineList is list().
-  list ENGINES in engineList.
-  for engine in engineList {
-    if (engine:ignition and engine:flameout) {
-      if shouldStage {
-        wait until stage:ready.
-        stage.
-      }
-      return true.
-    }
-  }
-
-  return false.
-}
-
-
 function launch {
   // Declaring states of launch sequence
   local init is 1.
@@ -75,7 +56,7 @@ function launch {
 
     when currentState = liftoff then {
       // Check if booster is empty
-      if doStage(false) {
+      if checkEngineFlameout() {
         set currentState to firstStageSeperation.
       } else {
         preserve.
@@ -83,6 +64,7 @@ function launch {
     }
 
     when currentState = firstStageSeperation then {
+      wait until stage:ready.
       stage. // seperation
 
       printTitle(1, "Second stage", true).
