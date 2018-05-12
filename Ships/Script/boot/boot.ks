@@ -7,7 +7,16 @@ switch to 1.
 Clearscreen.
 print "Booting ...".
 
-// Loading boot files
+// Delete all existing files (when rebooting)
+local dirList is list().
+list files in dirList.
+for dirItem in dirList {
+  if (dirItem:isfile) {
+    DELETEPATH(dirItem).
+  }
+}
+
+// Loading new boot files
 copypath("0:/lib/boot/include.ks", "1:/include.ks").
 runoncepath("include").
 
